@@ -129,4 +129,12 @@ class UsersController extends Controller
         auth()->logout();
         return redirect('login');
     }
+
+    public function closeAccount(Request $request){
+        if($request->has('reason')){
+            auth()->user()->update(['delete_reason'=>$request->get('reason')]);
+        }
+        auth()->user()->delete();
+        return redirect('login');
+    }
 }

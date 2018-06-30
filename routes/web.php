@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Route::get('/home', 'HomeController@index');
 
-Route::get('/login',    'Dashboard\UsersController@loginView');
+Route::get('/login',    'Dashboard\UsersController@loginView')->name('login');
 Route::post('/login',   'Dashboard\UsersController@login');
 
 Route::get('/register',             'Dashboard\UsersController@registerView');
@@ -25,3 +25,7 @@ Route::post('/register',            'Dashboard\UsersController@register');
 Route::get('users/verify/{code}',   'Dashboard\UsersController@verifyUser');
 
 Route::post('/logout', 'Dashboard\UsersController@logout');
+
+Route::group(['middleware'  => 'auth:web'], function(){
+    Route::delete('users/account', 'Dashboard\UsersController@closeAccount');
+});

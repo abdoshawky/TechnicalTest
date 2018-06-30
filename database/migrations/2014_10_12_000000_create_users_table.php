@@ -25,6 +25,8 @@ class CreateUsersTable extends Migration
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->rememberToken();
+            $table->text('delete_reason')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -27,7 +27,7 @@ class HomeController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $posts = Post::orderBy('created_at','desc')->with('comments','user', 'category')->paginate(10);
+        $posts = Post::orderBy('created_at','desc')->with('comments.user','user', 'category')->paginate(10);
         return view('home', compact('categories', 'posts'));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Models\Comment;
 use App\Models\Post;
 use Validator;
 use Illuminate\Http\Request;
@@ -62,16 +63,28 @@ class PostsController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $post = Post::find($id);
         $post->delete();
+        return redirect()->back();
+    }
+
+    public function storeComment(Request $request, $id){
+        if($request->has('comment')){
+            $data = [
+                'user_id'   => auth()->id(),
+                'post_id'   => $id,
+                'content'   => $request->get('comment')
+            ];
+            Comment::create($data);
+        }
+        return redirect()->back();
+    }
+
+    public function destroyComment($postId, $commentId){
+        $comment = Comment::find($commentId);
+        $comment->delete();
         return redirect()->back();
     }
 }

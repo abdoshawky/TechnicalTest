@@ -40,7 +40,7 @@
                                 <label for="title" class="col-md-4 col-form-label text-md-right">{{ __('Title') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="title" type="text" class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" name="title" value="{{ old('title') }}" required autofocus>
+                                    <input id="title" type="text" class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" name="title" value="{{ old('title') }}" required>
 
                                     @if ($errors->has('title'))
                                         <span class="invalid-feedback" role="alert">
@@ -82,7 +82,6 @@
 
             @if(auth()->user()->verified == 1)
 
-
                 @foreach($posts as $post)
                     <div class="card" style="margin: 20px 0;">
                         <div class="card-header">
@@ -122,6 +121,32 @@
                                     {!! $post->content !!}
                                 </div>
 
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form action="{!! url('posts/'.$post->id.'/comments') !!}" method="post">
+                                        @csrf
+                                        <input type="text" name="comment" value="" class="form-control">
+                                    </form>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                @foreach($post->comments as $comment)
+                                <div style="padding: 10px; margin: 10px 0;border: 1px solid #ccc;border-radius: 5px;" class="col-md-12">
+                                    <img src="{!! url($comment->user->image) !!}" width="50" height="50" class="img-responsive img-thumbnail">
+                                    {!! $comment->content !!}
+                                    @if(auth()->id() == $comment->user->id)
+                                        <form style="display: inline-block; margin: 10px 10px;" action="{!! url('posts/'.$post->id.'/comments/'.$comment->id) !!}" method="post">
+                                            @csrf
+                                            {!! method_field('delete') !!}
+                                            <input type="submit" value="Delete" class="btn btn-danger">
+                                        </form>
+                                    @endif
+                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>

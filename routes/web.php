@@ -29,7 +29,9 @@ Route::group(['middleware'  => 'auth:web'], function(){
     Route::put('users/account',     'Dashboard\UsersController@updateAccount');
     Route::delete('users/account',  'Dashboard\UsersController@closeAccount');
 
-    Route::post('posts',        'Dashboard\PostsController@store');
-    Route::put('posts/{id}',    'Dashboard\PostsController@update');
-    Route::delete('posts/{id}', 'Dashboard\PostsController@destroy');
+    Route::post('posts',                    'Dashboard\PostsController@store');
+    Route::put('posts/{id}',                'Dashboard\PostsController@update');
+    Route::delete('posts/{id}',             'Dashboard\PostsController@destroy');
+    Route::post('posts/{id}/comments',      'Dashboard\PostsController@storeComment');
+    Route::delete('posts/{postId}/comments/{commentId}', 'Dashboard\PostsController@destroyComment');
 });

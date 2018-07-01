@@ -11,11 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
 
-Route::get('/home', 'HomeController@index');
+//Route::get('/home', 'HomeController@index');
 
 Route::get('/login',    'Dashboard\UsersController@loginView')->name('login');
 Route::post('/login',   'Dashboard\UsersController@login');
@@ -30,4 +28,8 @@ Route::group(['middleware'  => 'auth:web'], function(){
     Route::get('users/account',     'Dashboard\UsersController@getAccount');
     Route::put('users/account',     'Dashboard\UsersController@updateAccount');
     Route::delete('users/account',  'Dashboard\UsersController@closeAccount');
+
+    Route::post('posts',        'Dashboard\PostsController@store');
+    Route::put('posts/{id}',    'Dashboard\PostsController@update');
+    Route::delete('posts/{id}', 'Dashboard\PostsController@destroy');
 });

@@ -19,14 +19,8 @@ class PostsSeeder extends Seeder
                 $data = [
                     'category_id'   => array_random($categoriesIds),
                     'user_id'       => array_random($usersIds),
-                    'title'         => [
-                        'ar'    => $faker->sentence(mt_rand(1,20), true),
-                        'en'    => $faker->sentence(mt_rand(1,20), true),
-                    ],
-                    'content'   => [
-                        'ar'    => $faker->paragraph(mt_rand(1,20), true),
-                        'en'    => $faker->paragraph(mt_rand(1,20), true),
-                    ]
+                    'title'         => $faker->sentence(mt_rand(1,20), true),
+                    'content'       => $faker->paragraph(mt_rand(1,20), true)
                 ];
                 \App\Models\Post::create($data);
             }

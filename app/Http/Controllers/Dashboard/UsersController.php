@@ -6,12 +6,13 @@ use App\Models\Hobby;
 use App\Models\User;
 use App\Models\UserHobby;
 use App\Notifications\Verification;
-use Validator;
-use File;
-use Image;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
+
+use Validator;
+use File;
+use Image;
 
 class UsersController extends Controller
 {
@@ -164,7 +165,12 @@ class UsersController extends Controller
         ];
         foreach ($optional as $option){
             if(!empty($input[$option])){
-                $data[$option] = $input[$option];
+                if($option == 'password'){
+                    $data[$option] = bcrypt($input[$option]);
+                }else{
+                    $data[$option] = $input[$option];
+                }
+
             }
         }
 

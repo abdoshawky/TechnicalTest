@@ -27,5 +27,7 @@ Route::get('users/verify/{code}',   'Dashboard\UsersController@verifyUser');
 Route::post('/logout', 'Dashboard\UsersController@logout');
 
 Route::group(['middleware'  => 'auth:web'], function(){
-    Route::delete('users/account', 'Dashboard\UsersController@closeAccount');
+    Route::get('users/account',     'Dashboard\UsersController@getAccount');
+    Route::put('users/account',     'Dashboard\UsersController@updateAccount');
+    Route::delete('users/account',  'Dashboard\UsersController@closeAccount');
 });

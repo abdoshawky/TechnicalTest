@@ -39,4 +39,28 @@ class User extends Authenticatable
         'remember_token',
         'api_token'
     ];
+
+    public function getImageAttribute(){
+        return url('images/normal/'.$this->attributes['image']);
+    }
+
+    public function getImagePathAttribute($value){
+        return 'uploaded/users/'.$this->attributes['image'];
+    }
+
+    public function getImageNameAttribute($value){
+        return $this->attributes['image'];
+    }
+
+    public function hobbies(){
+        return $this->belongsToMany(Hobby::class, 'user_hobby');
+    }
+
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
+
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
 }

@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\UserHobby;
 use App\Notifications\Verification;
 use Validator;
+use File;
+use Image;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
@@ -123,6 +125,66 @@ class UsersController extends Controller
             session()->put('success','Your email has been verified');
         }
         return redirect('login');
+    }
+
+    public function getAccount(){
+        $this->return['hobbies'] = Hobby::all();
+        return view('account', $this->return);
+    }
+
+    public function updateAccount(Request $request){
+        $user = User::find(auth()->id());
+        $input = $request->all();
+        $rules = [
+            'name'      => 'required',
+            'email'     => 'required|email|unique:users,email,'.auth()->id(),
+            'gender'    => [
+                'required',
+                Rule::in(['male','female'])
+            ]
+        ];
+        if(!empty($input['password'])){
+            $rules['password']  = 'required|confirmed';
+        }
+        $validation = Validator::make($input, $rules);
+        if($validation->fails()){
+            return redirect()->back()->withInput()->withErrors($validation);
+        }
+
+        $data = [
+            'name'      => $input['name'],
+            'email'     => $input['email'],
+            'gender'    => $input['gender'],
+        ];
+
+        $optional = [
+            'password',
+            'address',
+            'phone'
+        ];
+        foreach ($optional as $option){
+            if(!empty($input[$option])){
+                $data[$option] = $input[$option];
+            }
+        }
+
+        $image = $user->imageName;
+        if($request->hasFile('image')){
+            // delete the user old image
+            File::delete($image);
+            // then upload the new image
+            $fullName = str_random(12).date('Y-m-d').'.jpeg';
+
+            $path = public_path('uploaded/users/');
+            Image::make($request->file('image'))->save($path.$fullName);
+
+            $image = $fullName;
+        }
+        $data['image'] = $image;
+
+        // update user data
+        $user->update($data);
+        return redirect()->back();
     }
 
     public function logout(){

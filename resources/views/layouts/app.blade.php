@@ -54,6 +54,10 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{!! url('users/account') !!}">
+                                        {{ __('Profile') }}
+                                    </a>
+
                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#closingReason">
                                         {{ __('Close account') }}
                                     </a>
@@ -76,6 +80,31 @@
         </nav>
 
         <main class="py-4">
+            <div id="closingReason" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Why do you want to close your account ?</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{!! url('users/account') !!}" method="post">
+                                {!! csrf_field() !!}
+                                {!! method_field('delete') !!}
+
+                                <div class="form-group">
+                                    <textarea name="reason" class="form-control" cols="30" rows="10"></textarea>
+                                </div>
+
+                                <input type="submit" class="btn btn-danger btn-block btn-embossed" value="Close">
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
             @yield('content')
         </main>
     </div>

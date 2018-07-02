@@ -34,4 +34,6 @@ Route::group(['middleware'  => 'auth:web'], function(){
     Route::delete('posts/{id}',             'Dashboard\PostsController@destroy');
     Route::post('posts/{id}/comments',      'Dashboard\PostsController@storeComment');
     Route::delete('posts/{postId}/comments/{commentId}', 'Dashboard\PostsController@destroyComment');
+
+    Route::resource('categories', 'Dashboard\CategoriesController');
 });
